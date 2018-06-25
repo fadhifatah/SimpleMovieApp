@@ -3,30 +3,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.MainActivity">
+    tools:context=".activity.MainActivity"
+    android:background="@android:color/background_light">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.SearchView
+        <LinearLayout
+            android:id="@+id/advance_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <EditText
+                android:id="@+id/year"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="number"
+                android:maxLength="4"
+                android:hint="@string/hint_year"/>
+
+            <Spinner
+                android:id="@+id/type"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+        <RelativeLayout
             android:id="@+id/search"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/advance_search"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/query"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="@string/search_here"
+                android:layout_toStartOf="@+id/submit"/>
+
+            <ImageButton
+                android:id="@+id/submit"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:contentDescription="@string/search_here"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_search_black_24dp"
+                android:background="@android:color/transparent"/>
+        </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/search"/>
-
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/search"
-            android:layout_margin="16dp"
-            android:text="@string/default_search"
-            android:textAlignment="center"/>
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

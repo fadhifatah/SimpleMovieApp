@@ -14,4 +14,7 @@ public class SearchModel implements Serializable {
 
     @SerializedName("Response")
     public String response;
+
+    @SerializedName("Error")
+    public String error;
 }

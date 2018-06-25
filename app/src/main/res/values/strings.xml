@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">OMDbApp</string>
-    <string name="default_search">Search your movies here</string>
+    <string name="default_search">Search your movie here</string>
+    <string name="hint_year">Year</string>
+    <string name="search_here">Search here</string>
+    <string name="poster_desc">Poster</string>
 </resources>

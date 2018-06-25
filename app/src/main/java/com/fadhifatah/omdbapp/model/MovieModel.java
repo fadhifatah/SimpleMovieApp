@@ -80,4 +80,7 @@ public class MovieModel implements Serializable {
 
     @SerializedName("Response")
     public String response;
+
+    @SerializedName("Error")
+    public String error;
 }
