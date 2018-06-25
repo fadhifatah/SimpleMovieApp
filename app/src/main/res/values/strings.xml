@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">OMDbApp</string>
+    <string name="default_search">Search your movies here</string>
 </resources>
