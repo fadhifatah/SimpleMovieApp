@@ -37,7 +37,7 @@
 
                     <EditText
                         android:id="@+id/year"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:inputType="number"
@@ -46,7 +46,7 @@
 
                     <Spinner
                         android:id="@+id/type"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="46dp"
                         android:layout_weight="1"
                         android:entries="@array/movie_type"
