@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements ItemListener {
     }
 
     private int dpToPx() {
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, getResources().getDisplayMetrics()));
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics()));
     }
 
     @OnClick(R.id.submit)
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements ItemListener {
             INDEX++;
         }
         else {
-            Snackbar.make(recyclerView, "There is no more items", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(recyclerView, "There are no more items", Snackbar.LENGTH_SHORT).show();
         }
     }
 

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-class RatingModel implements Serializable {
+public class RatingModel implements Serializable {
     @SerializedName("Source")
     public String source;
 
