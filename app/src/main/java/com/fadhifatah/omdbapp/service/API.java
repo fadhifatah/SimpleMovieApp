@@ -28,7 +28,7 @@ public class API {
     }
 
     public interface Service {
-        @GET()
+        @GET("/")
         Call<SearchModel> search(
                 @Query("apikey") String apiKey,
                 @Query("s") String search,
@@ -37,7 +37,7 @@ public class API {
                 @Query("page") Integer page
         );
 
-        @GET()
+        @GET("/")
         Call<MovieModel> getMovie(
                 @Query("apikey") String apiKey,
                 @Query("i") String imdbId

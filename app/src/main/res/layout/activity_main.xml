@@ -30,7 +30,9 @@
                 android:id="@+id/type"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:entries="@array/movie_type"
+                android:prompt="@string/type" />
         </LinearLayout>
 
         <RelativeLayout
@@ -62,6 +64,8 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/search"/>
+            android:layout_below="@id/search"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"/>
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
