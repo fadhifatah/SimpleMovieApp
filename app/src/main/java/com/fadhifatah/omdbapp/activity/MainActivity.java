@@ -39,11 +39,14 @@ public class MainActivity extends AppCompatActivity implements ItemListener {
     private final String STATE_LIST = "state_list";
     private final String STATE_INDEX = "state_index";
     private final String STATE_LOADING = "state_loading";
+    private final String STATE_QUERY = "state_query";
+    private final String STATE_TYPE = "state_type";
+    private final String STATE_YEAR = "state_year";
 
     private int INDEX = 1;
     private RecyclerView.LayoutManager layoutManager;
     private ItemPresenter presenter;
-    private String query, type, year;
+    private String query = "", type = "", year = "";
     private int pastVisibleItem, visibleItemCount, totalItemCount;
     private boolean isLoading = true;
     private List<ItemModel> list = new ArrayList<>();
@@ -84,12 +87,23 @@ public class MainActivity extends AppCompatActivity implements ItemListener {
         setUpLayoutManager();
 
         if (savedInstanceState != null) {
+            Log.d("SAVED_INSTANCE_BEFORE", "INDEX -> " + INDEX);
+            Log.d("SAVED_INSTANCE_BEFORE", "list -> " + list.size());
+            Log.d("SAVED_INSTANCE_BEFORE", "isLoading -> " + isLoading);
+
             list = new ArrayList<>((List<ItemModel>) savedInstanceState.getSerializable(STATE_LIST));
             ItemAdapter adapter = new ItemAdapter(this, list);
             recyclerView.setAdapter(adapter);
 
             INDEX = savedInstanceState.getInt(STATE_INDEX);
-            isLoading = true;
+            isLoading = savedInstanceState.getBoolean(STATE_LOADING);
+            query = savedInstanceState.getString(STATE_QUERY);
+            type = savedInstanceState.getString(STATE_TYPE);
+            year = savedInstanceState.getString(STATE_YEAR);
+
+            Log.d("SAVED_INSTANCE_AFTER", "INDEX -> " + INDEX);
+            Log.d("SAVED_INSTANCE_AFTER", "list -> " + list.size());
+            Log.d("SAVED_INSTANCE_AFTER", "isLoading -> " + isLoading);
         }
     }
 
@@ -210,5 +224,8 @@ public class MainActivity extends AppCompatActivity implements ItemListener {
         outState.putSerializable(STATE_LIST, new ArrayList<>(list));
         outState.putInt(STATE_INDEX, INDEX);
         outState.putBoolean(STATE_LOADING, isLoading);
+        outState.putString(STATE_QUERY, query);
+        outState.putString(STATE_TYPE, type);
+        outState.putString(STATE_YEAR, year);
     }
 }
