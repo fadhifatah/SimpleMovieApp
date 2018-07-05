@@ -1,38 +1,33 @@
 package com.fadhifatah.omdbapp.activity;
 
-import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.fadhifatah.omdbapp.R;
 import com.fadhifatah.omdbapp.adapter.ItemAdapter;
+import com.fadhifatah.omdbapp.base.BaseActivity;
 import com.fadhifatah.omdbapp.listener.ItemListener;
 import com.fadhifatah.omdbapp.model.ItemModel;
 import com.fadhifatah.omdbapp.model.SearchModel;
 import com.fadhifatah.omdbapp.presenter.ItemPresenter;
-import com.fadhifatah.omdbapp.util.GridSpacingItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity implements ItemListener {
+public class MainActivity extends BaseActivity implements ItemListener {
+
+    private final String TAG = "ActivitySearch";
     private final String STATE_LIST = "state_list";
     private final String STATE_INDEX = "state_index";
     private final String STATE_LOADING = "state_loading";
@@ -44,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements ItemListener {
     private RecyclerView.LayoutManager layoutManager;
     private ItemPresenter presenter;
     private String query = "", type = "", year = "";
-    private int pastVisibleItem, visibleItemCount, totalItemCount;
     private boolean isLoading = true;
     private List<ItemModel> list = new ArrayList<>();
 
@@ -64,30 +58,12 @@ public class MainActivity extends AppCompatActivity implements ItemListener {
     RecyclerView recyclerView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-
+    protected void init(@Nullable Bundle savedInstanceState) {
         presenter = new ItemPresenter(this);
 
-        searchET.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    submitIB.performClick();
-                    return true;
-                }
-                return false;
-            }
-        });
         setUpLayoutManager();
 
         if (savedInstanceState != null) {
-            Log.d("SAVED_INSTANCE_BEFORE", "INDEX -> " + INDEX);
-            Log.d("SAVED_INSTANCE_BEFORE", "list -> " + list.size());
-            Log.d("SAVED_INSTANCE_BEFORE", "isLoading -> " + isLoading);
-
             list = new ArrayList<>((List<ItemModel>) savedInstanceState.getSerializable(STATE_LIST));
             ItemAdapter adapter = new ItemAdapter(this, list);
             recyclerView.setAdapter(adapter);
@@ -97,42 +73,32 @@ public class MainActivity extends AppCompatActivity implements ItemListener {
             query = savedInstanceState.getString(STATE_QUERY);
             type = savedInstanceState.getString(STATE_TYPE);
             year = savedInstanceState.getString(STATE_YEAR);
-
-            Log.d("SAVED_INSTANCE_AFTER", "INDEX -> " + INDEX);
-            Log.d("SAVED_INSTANCE_AFTER", "list -> " + list.size());
-            Log.d("SAVED_INSTANCE_AFTER", "isLoading -> " + isLoading);
+            Log.d(TAG, "State loaded");
         }
     }
 
-    private void setUpLayoutManager() {
-        int spanCount;
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            spanCount = 2;
-        }
-        else {
-            spanCount = 4;
-        }
-        layoutManager = new GridLayoutManager(this, spanCount);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, dpToPx(), true));
+    @Override
+    protected int findLayoutById() {
+        return R.layout.activity_main;
+    }
 
+    private void setUpLayoutManager() {
+        setUpGridRecyclerView(recyclerView);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy > 0) {
-                    Log.d("ON_SCROLLED", "Down");
-                    GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
-                    visibleItemCount = gridLayoutManager.getChildCount();
-                    totalItemCount = gridLayoutManager.getItemCount();
-                    pastVisibleItem = gridLayoutManager.findFirstVisibleItemPosition();
+                    Log.d(TAG, "Scroll down");
+                    GridLayoutManager gridLayoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
+                    int visibleItemCount = gridLayoutManager.getChildCount();
+                    int totalItemCount = gridLayoutManager.getItemCount();
+                    int firstVisibleItem = gridLayoutManager.findFirstVisibleItemPosition();
 
                     if (isLoading) {
-                        if ((visibleItemCount + pastVisibleItem) >= totalItemCount) {
-                            Log.d("ON_SCROLLED", "End of list");
+                        if ((visibleItemCount + firstVisibleItem) >= totalItemCount) {
+                            Log.d(TAG, "Scroll to end of list");
                             isLoading = false;
-                            Log.d("ON_SCROLLED", "Run Presenter");
-                            Log.d("ON_SCROLLED", "Page: " + INDEX);
                             presenter.loadMoreItems(query, year, type, INDEX);
                         }
                     }
@@ -141,15 +107,9 @@ public class MainActivity extends AppCompatActivity implements ItemListener {
         });
     }
 
-    private int dpToPx() {
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics()));
-    }
-
     @OnClick(R.id.submit)
     public void onSubmit() {
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-
+        hideKeyboardInput();
         INDEX = 1;
         query = searchET.getText().toString().trim();
         year = yearET.getText().toString().trim();
@@ -159,8 +119,6 @@ public class MainActivity extends AppCompatActivity implements ItemListener {
             Snackbar.make(recyclerView, "Search field can't be empty", Snackbar.LENGTH_SHORT).show();
         }
         else {
-            Log.d("ON_SUBMIT", "Run Presenter");
-            Log.d("ON_SUBMIT", "Page: " + INDEX);
             presenter.searchItem(query, year, type, INDEX);
         }
     }
@@ -168,9 +126,8 @@ public class MainActivity extends AppCompatActivity implements ItemListener {
     @Override
     public void OnSearchResponse(SearchModel model) {
         if (model.response.equalsIgnoreCase("true")) {
-            Log.d("SEARCH_RESPONSE", "Success");
+            Log.d(TAG, "Get search result: " + model.searchList.size());
             list = new ArrayList<>(model.searchList);
-            Log.d("SEARCH_RESPONSE", "List size: " + list.size());
             ItemAdapter adapter = new ItemAdapter(this, list);
             recyclerView.setAdapter(adapter);
 
@@ -186,12 +143,11 @@ public class MainActivity extends AppCompatActivity implements ItemListener {
     @Override
     public void OnLoadMoreResponse(SearchModel model) {
         if (model.response.equalsIgnoreCase("true")) {
-            Log.d("LOAD_MORE_RESPONSE", "Success");
+            Log.d(TAG, "Get load more result");
             ((ItemAdapter) recyclerView.getAdapter()).addNewList(model.searchList);
             recyclerView.getAdapter().notifyDataSetChanged();
 
             list = new ArrayList<>(((ItemAdapter) recyclerView.getAdapter()).getList());
-            Log.d("LOAD_MORE_RESPONSE", "New items added");
             isLoading = true;
             INDEX++;
         }
@@ -214,5 +170,6 @@ public class MainActivity extends AppCompatActivity implements ItemListener {
         outState.putString(STATE_QUERY, query);
         outState.putString(STATE_TYPE, type);
         outState.putString(STATE_YEAR, year);
+        Log.d(TAG, "State saved");
     }
 }

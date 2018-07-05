@@ -11,12 +11,24 @@ import android.view.View;
 public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
     private int spanCount;
     private int spacing;
-    private boolean includingEdge;
+    private boolean isEdged;
 
-    public GridSpacingItemDecoration(int spanCount, int dpToPx, boolean b) {
+    public GridSpacingItemDecoration(int spanCount, int spacing, boolean isEdged) {
         this.spanCount = spanCount;
-        this.spacing = dpToPx;
-        this.includingEdge = b;
+        this.spacing = spacing;
+        this.isEdged = isEdged;
+    }
+
+    public int getSpanCount() {
+        return spanCount;
+    }
+
+    public void setSpacing(int spacing) {
+        this.spacing = spacing;
+    }
+
+    public boolean isEdged() {
+        return isEdged;
     }
 
     @Override
@@ -26,7 +38,7 @@ public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
         int position = parent.getChildAdapterPosition(view);
         int column = position % spanCount;
 
-        if (includingEdge) {
+        if (isEdged) {
             outRect.left = spacing - column * spacing / spanCount;
             outRect.right = (column + 1) * spacing / spanCount;
             outRect.top = (position < spanCount) ? spacing : outRect.top;
