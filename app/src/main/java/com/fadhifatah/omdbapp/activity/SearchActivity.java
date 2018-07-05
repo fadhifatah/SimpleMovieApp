@@ -14,10 +14,10 @@ import android.widget.Spinner;
 import com.fadhifatah.omdbapp.R;
 import com.fadhifatah.omdbapp.adapter.ItemAdapter;
 import com.fadhifatah.omdbapp.base.BaseActivity;
-import com.fadhifatah.omdbapp.listener.ItemListener;
+import com.fadhifatah.omdbapp.listener.SearchListener;
 import com.fadhifatah.omdbapp.model.ItemModel;
 import com.fadhifatah.omdbapp.model.SearchModel;
-import com.fadhifatah.omdbapp.presenter.ItemPresenter;
+import com.fadhifatah.omdbapp.presenter.SearchPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity implements ItemListener {
+public class SearchActivity extends BaseActivity implements SearchListener {
 
     private final String TAG = "ActivitySearch";
     private final String STATE_LIST = "state_list";
@@ -37,7 +37,7 @@ public class MainActivity extends BaseActivity implements ItemListener {
 
     private int INDEX = 1;
     private RecyclerView.LayoutManager layoutManager;
-    private ItemPresenter presenter;
+    private SearchPresenter presenter;
     private String query = "", type = "", year = "";
     private boolean isLoading = true;
     private List<ItemModel> list = new ArrayList<>();
@@ -59,7 +59,7 @@ public class MainActivity extends BaseActivity implements ItemListener {
 
     @Override
     protected void init(@Nullable Bundle savedInstanceState) {
-        presenter = new ItemPresenter(this);
+        presenter = new SearchPresenter(this);
 
         setUpLayoutManager();
 
@@ -79,7 +79,7 @@ public class MainActivity extends BaseActivity implements ItemListener {
 
     @Override
     protected int findLayoutById() {
-        return R.layout.activity_main;
+        return R.layout.activity_search;
     }
 
     private void setUpLayoutManager() {

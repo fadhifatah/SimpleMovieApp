@@ -1,6 +1,6 @@
 package com.fadhifatah.omdbapp.presenter;
 
-import com.fadhifatah.omdbapp.listener.ItemListener;
+import com.fadhifatah.omdbapp.listener.SearchListener;
 import com.fadhifatah.omdbapp.model.SearchModel;
 import com.fadhifatah.omdbapp.service.API;
 import com.fadhifatah.omdbapp.util.Constant;
@@ -9,11 +9,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ItemPresenter {
-    private ItemListener listener;
+public class SearchPresenter {
+    private SearchListener listener;
 
-    public ItemPresenter(ItemListener itemListener) {
-        this.listener = itemListener;
+    public SearchPresenter(SearchListener searchListener) {
+        this.listener = searchListener;
     }
 
     public void searchItem(String query, String year, String type, int index) {
