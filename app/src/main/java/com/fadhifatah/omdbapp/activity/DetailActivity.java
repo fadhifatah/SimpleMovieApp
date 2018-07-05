@@ -2,8 +2,7 @@ package com.fadhifatah.omdbapp.activity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
@@ -13,18 +12,18 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fadhifatah.omdbapp.R;
 import com.fadhifatah.omdbapp.adapter.RatingAdapter;
-import com.fadhifatah.omdbapp.model.MovieModel;
-import com.fadhifatah.omdbapp.service.API;
+import com.fadhifatah.omdbapp.base.BaseActivity;
+import com.fadhifatah.omdbapp.listener.DetailListener;
+import com.fadhifatah.omdbapp.presenter.DetailPresenter;
 import com.fadhifatah.omdbapp.util.Constant;
+import com.fadhifatah.omdbapp.util.MoviePresenter;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends BaseActivity implements DetailListener{
+
     private ProgressDialog dialog;
+    private DetailPresenter presenter = new DetailPresenter(this);
 
     @BindView(R.id.poster_detail)
     ImageView poster;
@@ -69,91 +68,53 @@ public class DetailActivity extends AppCompatActivity {
     TextView boxOffice;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
-        ButterKnife.bind(this);
-
+    protected void init(@Nullable Bundle savedInstanceState) {
+//        Set-up toolbar
         String imdbId = (String) getIntent().getSerializableExtra(Constant.IMDB);
-        getSupportActionBar().setTitle(imdbId);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        setTitle(imdbId);
+        showNavigateUp();
 
-        dialog = new ProgressDialog(this);
-        dialog.setMessage("Loading...");
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setIndeterminate(false);
-        dialog.setCancelable(false);
+        setUpLinearRecyclerView(ratingView, LinearLayoutManager.HORIZONTAL);
+
+        dialog = setUpProgressDialog("Loading...");
         dialog.show();
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        ratingView.setLayoutManager(layoutManager);
-
-        API.getClientEvent()
-                .create(API.Service.class)
-                .getMovie(Constant.API_KEY, imdbId)
-                .enqueue(new Callback<MovieModel>() {
-                    @Override
-                    public void onResponse(Call<MovieModel> call, Response<MovieModel> response) {
-                        MovieModel model = response.body();
-                        if (model.response.equalsIgnoreCase("true")) {
-                            if (!model.posterUrl.equalsIgnoreCase("n/a")) {
-                                poster.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                                Glide.with(getApplicationContext())
-                                        .load(model.posterUrl)
-                                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                        .into(poster);
-                            }
-
-                            String s = model.title + " (" + model.year + ")";
-                            title.setText(s);
-
-                            s = model.rated + " • " + model.runtime + " • " + model.genre + " • ";
-                            information.setText(s);
-
-                            s = "Released at " + model.released + " from " + model.country + " (" +
-                                    model.language + ") • " + model.production;
-                            additional.setText(s);
-
-                            s = "Metascore - " + model.metascore + " • IMDb Rating - " + model.imdbRating +
-                                    " • " + model.imdbVotes + " votes";
-                            scores.setText(s);
-
-                            s = "Directed by " + model.director;
-                            director.setText(s);
-
-                            s = "Awards - " + model.awards;
-                            awards.setText(s);
-
-                            writer.setText(model.writer);
-                            actor.setText(model.actors);
-                            dvd.setText(model.dvd);
-                            website.setText(model.website);
-                            boxOffice.setText(model.boxOffice);
-
-                            s = "\"" + model.plot + "\"";
-                            plot.setText(s);
-
-                            RatingAdapter adapter = new RatingAdapter(getBaseContext(), model.ratingList);
-                            ratingView.setAdapter(adapter);
-                        }
-                        else {
-                            Snackbar.make(ratingView, model.error, Snackbar.LENGTH_SHORT).show();
-                        }
-                        dialog.dismiss();
-                    }
-
-                    @Override
-                    public void onFailure(Call<MovieModel> call, Throwable t) {
-                        dialog.dismiss();
-                        Snackbar.make(ratingView, "Time out! " + t.getMessage(), Snackbar.LENGTH_SHORT).show();
-                    }
-                });
+        presenter.getMovieDetail(imdbId);
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
+    protected int findLayoutById() {
+        return R.layout.activity_detail;
+    }
+
+    @Override
+    public void OnResultResponse(MoviePresenter moviePresenter) {
+        if (!moviePresenter.getPosterUrl().equalsIgnoreCase("n/a")) {
+            poster.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            Glide.with(poster.getContext())
+                    .load(moviePresenter.getPosterUrl())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(poster);
+        }
+        title.setText(moviePresenter.getTitle());
+        information.setText(moviePresenter.getInformation());
+        additional.setText(moviePresenter.getAdditionalInfo());
+        scores.setText(moviePresenter.getScores());
+        director.setText(moviePresenter.getDirectors());
+        awards.setText(moviePresenter.getAwards());
+        writer.setText(moviePresenter.getWriters());
+        actor.setText(moviePresenter.getActors());
+        dvd.setText(moviePresenter.getDVD());
+        website.setText(moviePresenter.getWebsite());
+        boxOffice.setText(moviePresenter.getBoxOffce());
+        plot.setText(moviePresenter.getPlot());
+
+        ratingView.setAdapter(new RatingAdapter(getBaseContext(), moviePresenter.getRatingList()));
+        dialog.dismiss();
+    }
+
+    @Override
+    public void OnError(String error) {
+        showSnackbar(error);
     }
 }

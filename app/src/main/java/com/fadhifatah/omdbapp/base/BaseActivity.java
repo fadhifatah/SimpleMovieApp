@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.inputmethod.InputMethodManager;
@@ -25,6 +26,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(findLayoutById());
         ButterKnife.bind(this);
         init(savedInstanceState);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     protected abstract void init(@Nullable Bundle savedInstanceState);
@@ -44,6 +51,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         view.setItemAnimator(new DefaultItemAnimator());
         view.addItemDecoration(new GridSpacingItemDecoration(spanCount, dpToPx(), true));
 
+    }
+
+    public void setUpLinearRecyclerView(RecyclerView view, int orientation) {
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, orientation, false);
+        view.setLayoutManager(layoutManager);
+        view.setItemAnimator(new DefaultItemAnimator());
     }
 
     private int dpToPx() {
