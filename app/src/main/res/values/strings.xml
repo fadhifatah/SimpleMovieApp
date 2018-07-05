@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OMDbApp</string>
+    <string name="app_name">OMDb</string>
     <string name="default_search">Search your movie here</string>
     <string name="hint_year">Year</string>
     <string name="search_here">Search here</string>

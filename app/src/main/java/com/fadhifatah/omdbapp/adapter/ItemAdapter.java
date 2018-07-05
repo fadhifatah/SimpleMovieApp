@@ -1,6 +1,5 @@
 package com.fadhifatah.omdbapp.adapter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -25,11 +24,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
-    private Context context;
     private List<ItemModel> list;
 
-    public ItemAdapter(Context context, List<ItemModel> models) {
-        this.context = context;
+    public ItemAdapter(List<ItemModel> models) {
         this.list = new ArrayList<>(models);
     }
 

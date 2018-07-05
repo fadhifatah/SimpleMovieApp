@@ -1,9 +1,11 @@
 package com.fadhifatah.omdbapp.base;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -51,5 +53,28 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void hideKeyboardInput() {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    public void showSnackbar(CharSequence message) {
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    public void setTitle(CharSequence title) {
+        getSupportActionBar().setTitle(title);
+    }
+
+    public void showNavigateUp() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+
+    public ProgressDialog setUpProgressDialog(CharSequence message) {
+        ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setMessage(message);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setIndeterminate(false);
+        dialog.setCancelable(false);
+
+        return dialog;
     }
 }
