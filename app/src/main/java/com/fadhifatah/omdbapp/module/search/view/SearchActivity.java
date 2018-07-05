@@ -27,9 +27,9 @@ import butterknife.OnClick;
 
 public class SearchActivity extends BaseActivity implements SearchListener {
 
-    private final String TAG = "ActivitySearch";
-    private final String STATE_LIST = "listState";
-    private final String STATE_INSTANCE = "instanceState";
+    private final static String TAG = "ActivitySearch";
+    private final static String STATE_LIST = "listState";
+    private final static String STATE_INSTANCE = "instanceState";
 
     private SearchPresenter presenter;
     private SearchInstance instance;

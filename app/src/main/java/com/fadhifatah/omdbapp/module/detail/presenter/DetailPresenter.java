@@ -29,8 +29,12 @@ public class DetailPresenter {
                         if (response.isSuccessful()) {
                             MovieModel model = response.body();
                             if (model != null) {
-                                if (model.response.equalsIgnoreCase("true"))
-                                    listener.OnResultResponse(new MoviePresenter(model));
+                                if (model.response.equalsIgnoreCase("true")) {
+                                    if (!model.posterUrl.equalsIgnoreCase("n/a"))
+                                        listener.OnResultResponse(new MoviePresenter(model));
+                                    else
+                                        listener.OnResultResponseWithoutPoster(new MoviePresenter(model));
+                                }
                                 else
                                     listener.OnError(model.error);
                             }

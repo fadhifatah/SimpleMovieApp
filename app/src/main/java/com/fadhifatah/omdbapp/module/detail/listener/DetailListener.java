@@ -6,5 +6,7 @@ public interface DetailListener {
 
     void OnResultResponse(MoviePresenter moviePresenter);
 
+    void OnResultResponseWithoutPoster(MoviePresenter moviePresenter);
+
     void OnError(String error);
 }

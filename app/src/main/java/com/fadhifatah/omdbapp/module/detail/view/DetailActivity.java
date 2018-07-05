@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +22,8 @@ import com.fadhifatah.omdbapp.module.detail.presenter.MoviePresenter;
 import butterknife.BindView;
 
 public class DetailActivity extends BaseActivity implements DetailListener{
+
+    private final static String TAG = "ActivityDetail";
 
     private ProgressDialog dialog;
     private DetailPresenter presenter = new DetailPresenter(this);
@@ -70,14 +73,17 @@ public class DetailActivity extends BaseActivity implements DetailListener{
     @Override
     protected void init(@Nullable Bundle savedInstanceState) {
 //        Set-up toolbar
+        Log.d(TAG, "Get intent");
         String imdbId = (String) getIntent().getSerializableExtra(Constant.IMDB);
         setTitle(imdbId);
         showNavigateUp();
 
         setUpLinearRecyclerView(ratingView, LinearLayoutManager.HORIZONTAL);
+        Log.d(TAG, "Set up complete");
 
         dialog = setUpProgressDialog("Loading...");
         dialog.show();
+        Log.d(TAG, "Loading...");
 
         presenter.getMovieDetail(imdbId);
     }
@@ -89,13 +95,29 @@ public class DetailActivity extends BaseActivity implements DetailListener{
 
     @Override
     public void OnResultResponse(MoviePresenter moviePresenter) {
-        if (!moviePresenter.getPosterUrl().equalsIgnoreCase("n/a")) {
-            poster.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            Glide.with(poster.getContext())
-                    .load(moviePresenter.getPosterUrl())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(poster);
-        }
+        Log.d(TAG, "Get result");
+        poster.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        Glide.with(poster.getContext())
+                .load(moviePresenter.getPosterUrl())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(poster);
+
+        setUpAllTextView(moviePresenter);
+
+        ratingView.setAdapter(new RatingAdapter(getBaseContext(), moviePresenter.getRatingList()));
+        dialog.dismiss();
+    }
+
+    @Override
+    public void OnResultResponseWithoutPoster(MoviePresenter moviePresenter) {
+        Log.d(TAG, "Get result");
+        setUpAllTextView(moviePresenter);
+
+        ratingView.setAdapter(new RatingAdapter(getBaseContext(), moviePresenter.getRatingList()));
+        dialog.dismiss();
+    }
+
+    private void setUpAllTextView(MoviePresenter moviePresenter) {
         title.setText(moviePresenter.getTitle());
         information.setText(moviePresenter.getInformation());
         additional.setText(moviePresenter.getAdditionalInfo());
@@ -108,13 +130,11 @@ public class DetailActivity extends BaseActivity implements DetailListener{
         website.setText(moviePresenter.getWebsite());
         boxOffice.setText(moviePresenter.getBoxOffce());
         plot.setText(moviePresenter.getPlot());
-
-        ratingView.setAdapter(new RatingAdapter(getBaseContext(), moviePresenter.getRatingList()));
-        dialog.dismiss();
     }
 
     @Override
     public void OnError(String error) {
+        dialog.dismiss();
         showSnackbar(error);
     }
 }
