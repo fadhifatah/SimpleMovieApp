@@ -1,4 +1,4 @@
-package com.fadhifatah.omdbapp.presenter;
+package com.fadhifatah.omdbapp.module.search.presenter;
 
 import android.os.Parcel;
 import android.os.Parcelable;

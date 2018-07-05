@@ -1,6 +1,6 @@
-package com.fadhifatah.omdbapp.listener;
+package com.fadhifatah.omdbapp.module.detail.listener;
 
-import com.fadhifatah.omdbapp.util.MoviePresenter;
+import com.fadhifatah.omdbapp.module.detail.presenter.MoviePresenter;
 
 public interface DetailListener {
 

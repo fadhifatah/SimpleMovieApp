@@ -1,4 +1,4 @@
-package com.fadhifatah.omdbapp.adapter;
+package com.fadhifatah.omdbapp.module.detail.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fadhifatah.omdbapp.R;
-import com.fadhifatah.omdbapp.model.RatingModel;
+import com.fadhifatah.omdbapp.module.detail.model.RatingModel;
 
 import java.util.ArrayList;
 import java.util.List;

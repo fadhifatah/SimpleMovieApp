@@ -1,11 +1,11 @@
-package com.fadhifatah.omdbapp.presenter;
+package com.fadhifatah.omdbapp.module.search.presenter;
 
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.fadhifatah.omdbapp.adapter.ItemAdapter;
-import com.fadhifatah.omdbapp.listener.SearchListener;
-import com.fadhifatah.omdbapp.model.SearchModel;
+import com.fadhifatah.omdbapp.module.search.adapter.ItemAdapter;
+import com.fadhifatah.omdbapp.module.search.listener.SearchListener;
+import com.fadhifatah.omdbapp.module.search.model.SearchModel;
 import com.fadhifatah.omdbapp.service.API;
 import com.fadhifatah.omdbapp.util.Constant;
 

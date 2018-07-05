@@ -1,12 +1,11 @@
-package com.fadhifatah.omdbapp.presenter;
+package com.fadhifatah.omdbapp.module.detail.presenter;
 
 import android.support.annotation.NonNull;
 
-import com.fadhifatah.omdbapp.listener.DetailListener;
-import com.fadhifatah.omdbapp.model.MovieModel;
+import com.fadhifatah.omdbapp.module.detail.listener.DetailListener;
+import com.fadhifatah.omdbapp.module.detail.model.MovieModel;
 import com.fadhifatah.omdbapp.service.API;
 import com.fadhifatah.omdbapp.util.Constant;
-import com.fadhifatah.omdbapp.util.MoviePresenter;
 
 import retrofit2.Call;
 import retrofit2.Callback;

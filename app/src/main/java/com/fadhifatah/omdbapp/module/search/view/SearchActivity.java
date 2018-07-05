@@ -1,4 +1,4 @@
-package com.fadhifatah.omdbapp.activity;
+package com.fadhifatah.omdbapp.module.search.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,13 +10,13 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.fadhifatah.omdbapp.R;
-import com.fadhifatah.omdbapp.adapter.ItemAdapter;
+import com.fadhifatah.omdbapp.module.search.adapter.ItemAdapter;
 import com.fadhifatah.omdbapp.base.BaseActivity;
-import com.fadhifatah.omdbapp.listener.SearchListener;
-import com.fadhifatah.omdbapp.model.ItemModel;
-import com.fadhifatah.omdbapp.model.SearchModel;
-import com.fadhifatah.omdbapp.presenter.SearchInstance;
-import com.fadhifatah.omdbapp.presenter.SearchPresenter;
+import com.fadhifatah.omdbapp.module.search.listener.SearchListener;
+import com.fadhifatah.omdbapp.module.search.model.ItemModel;
+import com.fadhifatah.omdbapp.module.search.model.SearchModel;
+import com.fadhifatah.omdbapp.module.search.presenter.SearchInstance;
+import com.fadhifatah.omdbapp.module.search.presenter.SearchPresenter;
 import com.fadhifatah.omdbapp.util.LoadMoreScrollListener;
 
 import java.util.ArrayList;

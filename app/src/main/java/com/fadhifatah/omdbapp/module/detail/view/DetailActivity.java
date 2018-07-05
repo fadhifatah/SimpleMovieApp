@@ -1,4 +1,4 @@
-package com.fadhifatah.omdbapp.activity;
+package com.fadhifatah.omdbapp.module.detail.view;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -11,12 +11,12 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fadhifatah.omdbapp.R;
-import com.fadhifatah.omdbapp.adapter.RatingAdapter;
+import com.fadhifatah.omdbapp.module.detail.adapter.RatingAdapter;
 import com.fadhifatah.omdbapp.base.BaseActivity;
-import com.fadhifatah.omdbapp.listener.DetailListener;
-import com.fadhifatah.omdbapp.presenter.DetailPresenter;
+import com.fadhifatah.omdbapp.module.detail.listener.DetailListener;
+import com.fadhifatah.omdbapp.module.detail.presenter.DetailPresenter;
 import com.fadhifatah.omdbapp.util.Constant;
-import com.fadhifatah.omdbapp.util.MoviePresenter;
+import com.fadhifatah.omdbapp.module.detail.presenter.MoviePresenter;
 
 import butterknife.BindView;
 

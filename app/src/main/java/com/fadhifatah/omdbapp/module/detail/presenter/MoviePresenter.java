@@ -1,7 +1,7 @@
-package com.fadhifatah.omdbapp.util;
+package com.fadhifatah.omdbapp.module.detail.presenter;
 
-import com.fadhifatah.omdbapp.model.MovieModel;
-import com.fadhifatah.omdbapp.model.RatingModel;
+import com.fadhifatah.omdbapp.module.detail.model.MovieModel;
+import com.fadhifatah.omdbapp.module.detail.model.RatingModel;
 
 import java.util.List;
 

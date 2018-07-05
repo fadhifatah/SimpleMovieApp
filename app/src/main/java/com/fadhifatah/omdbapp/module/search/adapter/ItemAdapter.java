@@ -1,4 +1,4 @@
-package com.fadhifatah.omdbapp.adapter;
+package com.fadhifatah.omdbapp.module.search.adapter;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -13,8 +13,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fadhifatah.omdbapp.R;
-import com.fadhifatah.omdbapp.activity.DetailActivity;
-import com.fadhifatah.omdbapp.model.ItemModel;
+import com.fadhifatah.omdbapp.module.detail.view.DetailActivity;
+import com.fadhifatah.omdbapp.module.search.model.ItemModel;
 import com.fadhifatah.omdbapp.util.Constant;
 
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package com.fadhifatah.omdbapp.service;
 
-import com.fadhifatah.omdbapp.model.MovieModel;
-import com.fadhifatah.omdbapp.model.SearchModel;
+import com.fadhifatah.omdbapp.module.detail.model.MovieModel;
+import com.fadhifatah.omdbapp.module.search.model.SearchModel;
 import com.fadhifatah.omdbapp.util.Constant;
 
 import okhttp3.OkHttpClient;

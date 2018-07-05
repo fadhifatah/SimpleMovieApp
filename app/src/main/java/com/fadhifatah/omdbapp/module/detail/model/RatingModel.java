@@ -1,4 +1,4 @@
-package com.fadhifatah.omdbapp.model;
+package com.fadhifatah.omdbapp.module.detail.model;
 
 import com.google.gson.annotations.SerializedName;
 
