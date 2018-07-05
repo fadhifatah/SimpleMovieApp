@@ -1,7 +1,6 @@
 package com.fadhifatah.omdbapp.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -24,9 +23,7 @@ import com.fadhifatah.omdbapp.listener.ItemListener;
 import com.fadhifatah.omdbapp.model.ItemModel;
 import com.fadhifatah.omdbapp.model.SearchModel;
 import com.fadhifatah.omdbapp.presenter.ItemPresenter;
-import com.fadhifatah.omdbapp.util.Constant;
 import com.fadhifatah.omdbapp.util.GridSpacingItemDecoration;
-import com.fadhifatah.omdbapp.util.ItemClickSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,16 +115,6 @@ public class MainActivity extends AppCompatActivity implements ItemListener {
         layoutManager = new GridLayoutManager(this, spanCount);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, dpToPx(), true));
-
-        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-//                Toast.makeText(getApplicationContext(), ((ItemAdapter) recyclerView.getAdapter()).getList().get(position).imdbId, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
-                intent.putExtra(Constant.IMDB, ((ItemAdapter) recyclerView.getAdapter()).getList().get(position).imdbId);
-                startActivity(intent);
-            }
-        });
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
