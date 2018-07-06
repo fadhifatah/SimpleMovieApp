@@ -14,15 +14,18 @@ import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.inputmethod.InputMethodManager;
 
+import com.crashlytics.android.Crashlytics;
 import com.fadhifatah.omdbapp.util.GridSpacingItemDecoration;
 
 import butterknife.ButterKnife;
+import io.fabric.sdk.android.Fabric;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(findLayoutById());
         ButterKnife.bind(this);
         init(savedInstanceState);
